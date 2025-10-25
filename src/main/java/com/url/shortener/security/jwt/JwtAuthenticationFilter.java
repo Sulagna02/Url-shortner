@@ -37,8 +37,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String jwt = jwtTokenProvider.getJwtFromHeader(request);
             if(jwt!=null && jwtTokenProvider.validateToken(jwt)){
                 String username = jwtTokenProvider.getUserNameFromJwtToken(jwt);
+                //user data accepted over here
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                //verified
                 if(userDetails != null){
+                    //authentication context is set in spring security
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
