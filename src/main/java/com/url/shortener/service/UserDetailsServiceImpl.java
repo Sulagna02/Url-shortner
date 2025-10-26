@@ -17,6 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     @Transactional
+    //this method is written to tell spring security that hey, this is how you are supposed to load the user after validating the token
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user =  userRepository.findByUsername(username)
