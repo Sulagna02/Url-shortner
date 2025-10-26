@@ -19,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
+@Configuration //its a configuration class
+@EnableWebSecurity //we are enabling spring security in our application
+@EnableMethodSecurity //allows us to use annotation at the method level and secure methods
 @AllArgsConstructor
 public class WebSecurityConfig {
 
@@ -52,7 +52,7 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
-
+    //CustomSecurityConfiguration
     @Bean
     public SecurityFilterChain  filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable)
@@ -63,9 +63,10 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 );
         http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class); //UsernamePasswordAuthenticationFilter.class is an inbuilt filter
+        //before this filter, I've added my own custom filter which is jwtAuthenticationFilter which is responsible for validating jwt tokens and loading the user information into tha memory  
+        
+        return http.build(); //return the object of type security filter chain
 
     }
 }
